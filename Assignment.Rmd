@@ -1,0 +1,74 @@
+---
+title: "R Markdown and Leaflet Assignment"
+author: "Maciej Gielnik"
+date: "28 01 2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+This is an Assignment 1: R Markdown and Leaflet Assignment for Developing Data 
+Products course by John Hopkins University on Coursera. The goal of this assignment is to:
+
+1. Create a web page using R Markdown.
+2. Web page features a map created with Leaflet.
+3. Assignment should be hosted on GitHub Pages, RPubs, or NeoCities.
+
+## Results
+
+### This is map of my city, Poznan
+```{r, echo = FALSE}
+library(leaflet)
+my_map <- leaflet() %>% addTiles() %>% addMarkers(lat = 52.4144, lng = 16.9211, popup = "My City, Poznan") %>% setView(lat = 52.4144, lng = 16.9211, zoom = 11)
+my_map
+```
+### Multiple markers with clustering placed randomly in my city, Poznan
+```{r, echo = FALSE}
+random_places <- data.frame(lat = runif(20, min = 52.35, max = 52.45),
+                 lng = runif(20, min = 16.8, max = 17.0 ))
+random_map <- random_places %>% leaflet() %>% addTiles() %>% addMarkers(clusterOptions = markerClusterOptions())
+random_map
+```
+
+### Drawing rectangle arround my University with a custom marker
+```{r, echo = FALSE}
+amuIcon <- makeIcon( iconUrl = "https://siw.amu.edu.pl/__data/assets/file/0004/162751/logo_wersja-podstawowa_granat_1.jpg",
+                         iconWidth = 31*215/60, iconHeight = 128,
+                         iconAnchorX = 31*215/115, iconAnchorY = 64)
+rectangle <- leaflet() %>% addTiles() %>% addRectangles(lat1 = 52.468803, lat2 = 52.464971,
+                                           lng1 = 16.921015, lng2 = 16.930734) %>% addMarkers(lat = (52.468803 + 52.464971)/2, lng = (16.921015+16.930734)/2, icon = amuIcon)
+rectangle
+```
+
+### Drawing circles with a random radius and a popup
+```{r, echo = FALSE}
+random_circles <- data.frame(lat = runif(10, min = 52.35, max = 52.45),
+                 lng = runif(10, min = 16.8, max = 17.0 ), radius= rnorm(10, 15, 5))
+random_circles <- 
+random_circles_map <- random_circles %>% leaflet() %>% addTiles() %>% 
+  addCircles(lng = ~lng, lat = ~lat, weight = 5, radius = random_circles$radius*20, label = ~radius, popup = (as.character(random_circles$radius)))
+random_circles_map
+```
+### Marking Faculties of my University with a legend
+```{r, echo = FALSE}
+faculties <- data.frame(lat = c(52.46795475928539, 52.4670368030835,
+                                52.46704760305942, 52.46684358746825), 
+                        lng = c(16.92179152333914, 16.924928768996025,
+                                16.9271436774097, 16.929451620005796),
+                        Name = c("Chemistry", "Biology", 
+                                 "Mathematics and Informatics", "Physics"),
+                        col = c("blue", "green", "red", "yellow"))
+faculties_map <- faculties %>% leaflet() %>% addTiles() %>% 
+  addCircleMarkers(lng = ~lng, lat = ~lat, popup = ~Name, color = ~col) %>% 
+  addLegend(labels = c("Chemistry", "Biology", "Mathematics and Informatics", 
+                       "Physics"), colors = c("blue", "green", "red", "yellow"))
+faculties_map
+```
+
+## Link to my github repo with R markdown file with code
+<https://github.com/maciejgielnik/DataProducts_Assignment1>
+
