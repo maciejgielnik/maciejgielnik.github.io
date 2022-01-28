@@ -70,5 +70,5 @@ faculties_map
 ```
 
 ## Link to my github repo with R markdown file with code
-<https://github.com/maciejgielnik/DataProducts_Assignment1>
+<https://github.com/maciejgielnik/maciejgielnik.github.io>
 
