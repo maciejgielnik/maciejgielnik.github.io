@@ -1,0 +1,29 @@
+---
+title: "R Markdown Presentation & Plotly"
+author: "Maciej Gielnik"
+date: "6 02 2022"
+output:
+  ioslides_presentation: default
+  slidy_presentation: default
+---
+
+
+## R Markdown
+
+This is an Assignment 2: R Markdown Presentation & Plotly for Developing Data 
+Products course by John Hopkins University on Coursera. The goal of this assignment is to:
+
+1. Create a web page presentation using R Markdown.
+2. Web page presentation must contain a plot created with plotly.
+3. Assignment should be hosted on GitHub Pages, RPubs, or NeoCities.
+
+## Plot created with plotly
+
+```{r, echo = FALSE, message=FALSE}
+library(ggplot2)
+library(plotly)
+
+my_plot <- plot_ly(iris, x = ~ Petal.Length, y = ~ Petal.Width, color = as.factor(iris$Species), type = "scatter", mode = "markers")
+my_plot
+```
+## Thank you!
