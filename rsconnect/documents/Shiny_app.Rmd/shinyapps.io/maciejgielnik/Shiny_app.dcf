@@ -1,0 +1,13 @@
+name: Shiny_app
+title: Shiny_app
+username:
+account: maciejgielnik
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 6075656
+bundleId: 5791455
+url: https://maciejgielnik.shinyapps.io/Shiny_app/
+when: 1649789733.75969
+lastSyncTime: 1649789733.75972
+asMultiple: FALSE
+asStatic: FALSE
