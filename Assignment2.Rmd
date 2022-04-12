@@ -1,12 +1,12 @@
 ---
 title: "R Markdown Presentation & Plotly"
 author: "Maciej Gielnik"
-date: "6 02 2022"
+date: "23 02 2022"
 output:
   ioslides_presentation: default
   slidy_presentation: default
 ---
-
+knitr::opts_chunk$set()
 
 ## R Markdown
 
@@ -19,11 +19,38 @@ Products course by John Hopkins University on Coursera. The goal of this assignm
 
 ## Plot created with plotly
 
-```{r, echo = FALSE, message=FALSE}
+
+```{r, echo = FALSE, include=FALSE}
 library(ggplot2)
 library(plotly)
+library(bio3d)
 
-my_plot <- plot_ly(iris, x = ~ Petal.Length, y = ~ Petal.Width, color = as.factor(iris$Species), type = "scatter", mode = "markers")
+dcdfile <- read.dcd("apo_v2_dcd.dcd")
+pdbfile <- read.pdb("apo_v2_input.pdb")
+
+
+ca.inds <- atom.select(pdbfile, elety="CA")
+
+xyz <- fit.xyz(fixed=pdbfile$xyz, mobile=dcdfile,
+               fixed.inds=ca.inds$xyz,
+               mobile.inds=ca.inds$xyz)
+
+
+rd <- rmsd(xyz[1,ca.inds$xyz], xyz[,ca.inds$xyz])
+rd_smooth <- lowess(rd)
+ln <- c(1:101)
+rd_df<- as.data.frame(cbind(ln, rd, rd_smooth$y))
+```
+
+```{r, include=FALSE}
+my_plot <- plot_ly(rd_df, x = ~ln, y = ~rd, type = "scatter", mode = "lines", 
+                   name = "RMSD")
+my_plot <- my_plot %>% layout(xaxis = list(title = "time (ns)"), yaxis = list(title = "RMSD (A)"))
+my_plot <- my_plot %>% add_trace( y = ~V3, mode ="lines", name = "RMSD smoothed")
+```
+Plot of a root-mean-square deviation (RMSD) of atomic positions for one of the proteins from my calsses 
+(blue), and smoothed RMSD (orange).
+```{r plot, echo = FALSE}
 my_plot
 ```
 ## Thank you!
