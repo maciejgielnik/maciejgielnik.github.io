@@ -1,0 +1,79 @@
+---
+title: "Shiny Application"
+author: "Maciej Gielnik"
+date: "13 02 2022"
+output: ioslides_presentation
+runtime: shiny
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Introduction
+
+I am a physics teacher.
+I have created application that helps to visualize the acceleration of a moving 
+car. The car can move:
+
+- with a constant velocity and no acceleration,
+- with a constant velocity and a constant acceleration.
+
+## Acceleration of a car
+
+```{r}
+library(shiny)
+inputPanel(
+  sliderInput("slider1", "Slide the slider to select velocity of a car (m/s)", 0, 20, 0),
+  sliderInput("slider2", "Slide the slider to select acceleration of a car (m/s^2)", 0, 5, 0)
+  )
+
+renderPlot({
+          dataX <- 0:10
+          dataY <- rep(c(input$slider2), times = 11)
+          plot(dataX, dataY, xlab = "Time (s)", ylab = "Acceleration (m/s^2)",
+               main = "Acceleration of a Car in function of time", xlim = c (0, 10), 
+               ylim = c (0, 5), type = "lines", col = "blue", lwd = 10)
+          }, width = 500
+        )
+?uiOutput
+```
+
+
+## Velocity of the car
+
+```{r}
+inputPanel(
+  sliderInput("slider3", "Slide the slider to select velocity of a car (m/s)", 0, 20, 0),
+  sliderInput("slider4", "Slide the slider to select acceleration of a car (m/s^2)", 0, 5, 0)
+  )
+
+renderPlot({
+          dataX2 <- 0:10
+          v <- input$slider3
+          a <- input$slider4
+          dataY2 <- (dataX2*a + v)
+          plot(dataX2, dataY2, xlab = "Time (s)", ylab = "Velocity (m/s)",
+               main = "Velocity of a Car in function of time", xlim = c (0, 10), 
+               ylim = c (0, 20), type = "lines", col = "red", lwd = 10)
+        }, width = 500)
+```
+
+## Distance travelled by a car
+
+```{r}
+inputPanel(
+  sliderInput("slider5", "Slide the slider to select velocity of a car (m/s)", 0, 20, 0),
+  sliderInput("slider6", "Slide the slider to select acceleration of a car (m/s^2)", 0, 5, 0)
+  )
+
+renderPlot({
+          dataX3 <- 0:10
+          v <- input$slider5
+          a <- input$slider6
+          dataY3 <- (0.5*a*(dataX3)^2) + v*(dataX3)
+          plot(dataX3, dataY3, xlab = "Time (s)", ylab = "Distance (m)",
+               main = "Distance travelled by the Car in function of time", xlim = c (0, 10), 
+               ylim = c (0, 100), type = "lines", col = "green", lwd = 10)
+        }, width = 500)
+```
